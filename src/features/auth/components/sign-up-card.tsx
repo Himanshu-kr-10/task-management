@@ -23,17 +23,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-const formSchema = z.object({
-  name: z.string().trim().min(1, "Name is required"),
-  email: z.string().trim().min(1, "required").email(),
-  password: z.string().min(8, "Password must be at least 8  characters long"),
-})
-
+import { registerSchema } from "../schemas"
+import { useRegister } from "../api/use-register"
 
 export const SignUpCard = () => {
+  const { mutate } = useRegister();
+
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -41,8 +38,8 @@ export const SignUpCard = () => {
     } 
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data) 
+  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+    mutate({ json: data })
   }
 
   return (
@@ -118,7 +115,7 @@ export const SignUpCard = () => {
               )}
             />
             <Button disabled={false} size="lg" className="w-full">
-              Login
+              Sign Up
             </Button>
           </form>
         </Form>
@@ -135,7 +132,7 @@ export const SignUpCard = () => {
           disabled={false}
         >
           <FcGoogle className="mr-2 size-5" />
-          Login with Google
+          Sign Up with Google
         </Button>
         <Button
           variant="secondary"
@@ -145,7 +142,7 @@ export const SignUpCard = () => {
           disabled={false}
         >
           <FaGithub className="mr-2 size-5" />
-          Login with Github
+          Sign Up with Github
         </Button>
       </CardContent>
       <div className="px-7">
