@@ -37,25 +37,27 @@ export const  CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof createProjectSchema>>({
-    resolver: zodResolver(createProjectSchema.omit({ workspaceId: true })),
+  const createProjectFormSchema = createProjectSchema.omit({ workspaceId: true });
+
+  const form = useForm<z.infer<typeof createProjectFormSchema>>({
+    resolver: zodResolver(createProjectFormSchema),
     defaultValues: {
       name: ""
     }
   });
 
 
-  const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
+  const onSubmit = (values: z.infer<typeof createProjectFormSchema>) => {
     const finalValues = {
       ...values,
+      workspaceId,
       image: values.image instanceof File ? values.image : "",
-      workspaceId
     };
 
     mutate({ form: finalValues }, {
       onSuccess: ({ data }) => {
         form.reset();
-        //TODO: redirect to project screen
+        router.push(`/workspaces/${workspaceId}/projects/${data.$id}`)
       }
     })
   }
