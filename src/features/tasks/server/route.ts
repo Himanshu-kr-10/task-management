@@ -10,7 +10,7 @@ import { getMember } from '@/features/members/utils';
 
 import { sessionMiddleware } from '@/lib/session-middleware';
 import { z } from 'zod';
-import { TaskStatus } from '../types';
+import { Task, TaskStatus } from '../types';
 import { createAdminClient } from '@/lib/appwrite';
 import { Project } from '@/features/projects/types';
 
@@ -84,7 +84,7 @@ const app = new Hono()
         );
       }
 
-      const tasks = await databases.listDocuments(
+      const tasks = await databases.listDocuments<Task>(
         DATABASE_ID,
         TASKS_ID,
         query
