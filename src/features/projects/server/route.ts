@@ -15,8 +15,7 @@ import { TaskStatus } from "@/features/tasks/types";
 
 
 const app = new Hono()
-  .post(
-    "/",
+  .post("/",
     sessionMiddleware,
     zValidator("form", createProjectSchema),
     async (c) => {
@@ -68,8 +67,7 @@ const app = new Hono()
       return c.json({ data: project })
     } 
   )
-  .get(
-    "/",
+  .get("/",
     sessionMiddleware,
     zValidator("query" , z.object({ workspaceId: z.string() })),
     async (c) => {
@@ -92,7 +90,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401)
       }
 
-      const projects = await databases.listDocuments(
+      const projects = await databases.listDocuments<Project>(
         DATABASE_ID,
         PROJECTS_ID,
         [
@@ -104,8 +102,7 @@ const app = new Hono()
       return c.json({ data: projects })
     }
   )
-  .get(
-    "/:projectId",
+  .get("/:projectId",
     sessionMiddleware,
     async (c) => {
       const user = c.get("user");
@@ -131,8 +128,7 @@ const app = new Hono()
       return c.json({ data: project })
     }
   )
-  .patch( 
-      "/:projectId",
+  .patch("/:projectId",
       sessionMiddleware,
       zValidator("form", updateProjectSchema),
       async (c) => {
@@ -192,8 +188,7 @@ const app = new Hono()
         return c.json({ data: project })
       } 
   )
-  .delete(
-    "/:projectId",
+  .delete("/:projectId",
     sessionMiddleware,
     async (c) => {
       const databases = c.get("databases");
