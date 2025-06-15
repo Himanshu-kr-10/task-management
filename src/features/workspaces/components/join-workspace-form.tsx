@@ -10,7 +10,7 @@ import {
   CardTitle,
   CardDescription
 } from "@/components/ui/card"
-import { useInviteCode } from "../hooks/use-workspace-id copy";
+import { useInviteCode } from "../hooks/use-invite-code";
 import { useJoinWorkspace } from "../api/use-join-workspace";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { useRouter } from "next/router";
